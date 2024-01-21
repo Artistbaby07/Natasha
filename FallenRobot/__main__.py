@@ -374,10 +374,7 @@ def FallenRobot_about_callback(update, context):
                 [
                     [
                         InlineKeyboardButton(
-                            text="𝗬𝗢𝗨𝗧𝗨𝗕𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟", url="https://www.youtube.com/c/KavinduAj"
-                        ),
-                        InlineKeyboardButton(
-                            text="🇱🇰𝗛𝗜𝗧𝗘𝗖𝗛 𝗚𝗥𝗢𝗨𝗣", url="https://t.me/hitechlkgroup"
+                            text="SUPPORT CHAT", url="https://t.me/StarkBotz_support"
                         ),
                     ],
                     [InlineKeyboardButton(text="⬅️ 𝗕𝗔𝗖𝗞", callback_data="FallenRobot_back")],
@@ -411,10 +408,6 @@ def FallenRobot_about_callback(update, context):
                  ],
                  [
                     InlineKeyboardButton(text="𝗦𝗨𝗣𝗣𝗢𝗥𝗧 👥", callback_data="FallenRobot_support"),
-                    InlineKeyboardButton(text="𝗖𝗥𝗘𝗗𝗜𝗧 👨🏻‍💻", callback_data="FallenRobot_credit"),
-                 ],
-                 [
-                    InlineKeyboardButton(text="𝐆𝐎 𝐈𝐍𝐋𝐈𝐍𝐄 ↗️", switch_inline_query_current_chat=""),
                  ],
                  [
                     InlineKeyboardButton(text="⬅️ 𝗕𝗔𝗖𝗞", callback_data="FallenRobot_back"),
@@ -469,32 +462,14 @@ def FallenRobot_about_callback(update, context):
                 ]
             ),
         )
-
-        
-    elif query.data == "FallenRobot_credit":
-        query.message.edit_text(
-            text=f"<b> CREDIT FOR MⷨRͬ.JOͦᴋⷦEͤRͬ DEV'S</b>\n"
-            f"\nHere Some Developers Helping in Making The Mr.Joker Bot",
-            parse_mode=ParseMode.HTML,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                 [
-                    InlineKeyboardButton(text="𝗞𝗔𝗩𝗜𝗡𝗗𝗨 𝗔𝗝", url="t.me/kavinduaj"),
-                    InlineKeyboardButton(text="𝗔𝗦𝗛𝗘𝗡 𝗦𝗛𝗔𝗟𝗨𝗞𝗔", url="t.me/ashenwalk"),
-                 
-                 ]
-                ]
-            ),
-        )
-        
         
 @run_async
 def Source_about_callback(update, context):
     query = update.callback_query
     if query.data == "source_":
         query.message.edit_text(
-            text=""" Hi..🤡 I'm *MⷨRͬ.JOͦᴋⷦEͤRͬ*
-                 \nHere is the [🤡Source Code🤡](https://github.com/kmacprt/MR-JOKER-BOT) .""",
+            text=""" Hi..🤡 I'm cutie
+                 \nHere is the [🤡Source Code🤡](t.me/crazy_1299) .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
