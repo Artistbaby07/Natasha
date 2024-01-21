@@ -1,9 +1,9 @@
-from typing import List, Dict
+from math import ceil
+from typing import Dict, List
 
-from telegram import MAX_MESSAGE_LENGTH, InlineKeyboardButton, Bot, ParseMode
+from FallenRobot import NO_LOAD
+from telegram import MAX_MESSAGE_LENGTH, Bot, InlineKeyboardButton, ParseMode
 from telegram.error import TelegramError
-
-from FallenRobot import LOAD, NO_LOAD
 
 
 class EqInlineKeyboardButton(InlineKeyboardButton):
@@ -30,8 +30,9 @@ def split_message(msg: str) -> List[str]:
         else:
             result.append(small_msg)
             small_msg = line
-    # Else statement at the end of the for loop, so append the leftover string.
-    result.append(small_msg)
+    else:
+        # Else statement at the end of the for loop, so append the leftover string.
+        result.append(small_msg)
 
     return result
 
@@ -39,40 +40,39 @@ def split_message(msg: str) -> List[str]:
 def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
     if not chat:
         modules = sorted(
-            [
-                EqInlineKeyboardButton(
-                    x.__mod_name__,
-                    callback_data="{}_module({})".format(
-                        prefix, x.__mod_name__.lower()
-                    ),
-                )
-                for x in module_dict.values()
-            ]
-        )
+            [EqInlineKeyboardButton(x.__mod_name__,
+                                    callback_data="{}_module({})".format(prefix, x.__mod_name__.lower())) for x
+             in module_dict.values()])
     else:
         modules = sorted(
-            [
-                EqInlineKeyboardButton(
-                    x.__mod_name__,
-                    callback_data="{}_module({},{})".format(
-                        prefix, chat, x.__mod_name__.lower()
-                    ),
-                )
-                for x in module_dict.values()
-            ]
-        )
+            [EqInlineKeyboardButton(x.__mod_name__,
+                                    callback_data="{}_module({},{})".format(prefix, chat, x.__mod_name__.lower())) for x
+             in module_dict.values()])
 
-    pairs = [modules[i * 3 : (i + 1) * 3] for i in range((len(modules) + 2 - 1) // 2)]
+    pairs = [
+    modules[i * 3:(i + 1) * 3] for i in range((len(modules) + 3 - 1) // 3)
+    ]
+
     round_num = len(modules) / 3
     calc = len(modules) - round(round_num)
-    if calc in [1, 2]:
-        pairs.append([modules[-1]])
+    if calc == 1:
+        pairs.append((modules[-1], ))
+    elif calc == 3:
+        pairs.append((modules[-1], ))
+
+    max_num_pages = ceil(len(pairs) / 10)
+    modulo_page = page_n % max_num_pages
+
+    # can only have a certain amount of buttons side by side
+    if len(pairs) > 10:
+        pairs = pairs[modulo_page * 10:10 * (modulo_page + 1)] + [
+            (EqInlineKeyboardButton("⬅️ 𝗕𝗔𝗖𝗞", callback_data="{}_prev({})".format(prefix, modulo_page)),
+                EqInlineKeyboardButton("𝗖𝗟𝗢𝗦𝗘 ❌", callback_data="FallenRobot_back"),
+             EqInlineKeyboardButton("𝗡𝗘𝗫𝗧 ➡️", callback_data="{}_next({})".format(prefix, modulo_page)))]
+
     else:
-        pairs += [
-            [
-                EqInlineKeyboardButton(text="ɢᴏ-ʜᴏᴍᴇ 🏡", callback_data="masha_back"),
-            ],
-        ]
+        pairs += [[EqInlineKeyboardButton("⬅️ 𝗕𝗔𝗖𝗞", callback_data="FallenRobot_back")]]
+
     return pairs
 
 
@@ -105,16 +105,14 @@ def build_keyboard(buttons):
 
 
 def revert_buttons(buttons):
-    return "".join(
-        "\n[{}](buttonurl://{}:same)".format(btn.name, btn.url)
-        if btn.same_line
-        else "\n[{}](buttonurl://{})".format(btn.name, btn.url)
-        for btn in buttons
-    )
+    res = ""
+    for btn in buttons:
+        if btn.same_line:
+            res += "\n[{}](buttonurl://{}:same)".format(btn.name, btn.url)
+        else:
+            res += "\n[{}](buttonurl://{})".format(btn.name, btn.url)
 
-
-def is_module_loaded(name):
-    return (not LOAD or name in LOAD) and name not in NO_LOAD
+    return res
 
 
 def build_keyboard_parser(bot, chat_id, buttons):
@@ -128,3 +126,7 @@ def build_keyboard_parser(bot, chat_id, buttons):
             keyb.append([InlineKeyboardButton(btn.name, url=btn.url)])
 
     return keyb
+
+
+def is_module_loaded(name):
+    return name not in NO_LOAD
