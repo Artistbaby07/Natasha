@@ -113,7 +113,7 @@ Main commands available:
  Click on the buttons below to get documentation about specific modules!
 """
 
-KAZUKO_IMG = "https://telegra.ph/file/6d0f29836fda1effbb4ba.jpg"
+KAZUKO_IMG = "https://telegra.ph/file/1b3bdfb6f72bc9aaa6543.jpg"
 
 DONATE_STRING =  """Heya, glad to hear you want to donate!
  You can support the project via [owner](t.me/crazy_1299) or by contacting @crazy_1299 \
@@ -377,7 +377,7 @@ def kazuko_about_callback(update, context):
 • I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
 • I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
 • I check for admins'permissions before executing any command and more stuffs
-\n_Kazuko's licensed under the GNU General Public License v3.0_
+\n_Natasha's licensed under the GNU General Public License v3.0_
 Have any question about Natasha?, let us know at Natasha's support chat.
 and also almost all modules usage defined in the help menu, checkout by sending /help
 or choosing help button at home menu and report error/bugs at Natasha's support chat...""",
@@ -702,7 +702,7 @@ def main():
     start_handler = CommandHandler("start", start, run_async=True)
 
     help_handler = CommandHandler("help", get_help, run_async=True)
-    help_callback_handler = CallbackQueryHandler(help_button, pattern=r"help_., run_async=True*")
+    help_callback_handler = CallbackQueryHandler(help_button, pattern=r"help_.", run_async=True*")
 
     settings_handler = CommandHandler("settings", get_settings)
     settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_, run_async=True")
@@ -723,6 +723,7 @@ def main():
     dispatcher.add_handler(migrate_handler)
     dispatcher.add_error_handler(error_callback)
     LOGGER.info("Using long polling.")
+    
     updater.start_polling(timeout=15, read_latency=4, clean=True)
 
     if len(argv) not in (1, 3, 4):
